@@ -100,7 +100,7 @@ basic.forever(function () {
     } else if (input.buttonIsPressed(Button.B) && !(input.buttonIsPressed(Button.A))) {
         秒表示()
     } else if (input.isGesture(Gesture.Shake)) {
-        時刻表示(音声有効)
+        時刻表示(false)
     } else {
         basic.clearScreen()
     }
