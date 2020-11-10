@@ -6,7 +6,9 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
 })
 function コマンド処理 () {
     if (コマンド == "s") {
-        datetime = split.splitNum(受信文字.substr(2, 100))
+        datetimeA = 受信文字.substr(2, 100).split(",")
+        datetime = [parseFloat(datetimeA[0]), parseFloat(datetimeA[1]), parseFloat(datetimeA[2]), parseFloat(datetimeA[3]), parseFloat(datetimeA[4]), parseFloat(datetimeA[5]), parseFloat(datetimeA[6])]
+        // datetime = split.splitNum(受信文字.substr(2, 100))
         rtc.setClockArray(datetime)
         開始時刻 = (datetime[rtc.getClockData(clockData.hour)] * 60 + datetime[rtc.getClockData(clockData.minute)]) * 60 + datetime[rtc.getClockData(clockData.second)]
         システム開始 = input.runningTime()
@@ -52,6 +54,7 @@ function 時刻表示 (読み上げ: boolean) {
 }
 let RTC時間 = 0
 let 開始時刻 = 0
+let datetimeA: string[] = []
 let 受信文字 = ""
 let datetime: number[] = []
 let システム開始 = 0
@@ -67,7 +70,7 @@ if (!(時計有効)) {
     basic.showIcon(IconNames.Sad)
     basic.pause(500)
 }
-let 音声有効 = rtc.testReadI2c(46) == 0
+let 音声有効 = atp3012.isAvalable()
 if (音声有効) {
     watchfont.plot(0, 0)
     basic.pause(200)
