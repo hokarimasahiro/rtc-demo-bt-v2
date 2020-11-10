@@ -1,6 +1,26 @@
 function 時間更新 () {
 	
 }
+function 着信表示 (時間: number, 電話番号: number) {
+    led.plot(1, 0)
+    led.plot(2, 0)
+    led.plot(3, 0)
+    led.plot(0, 1)
+    led.plot(4, 1)
+    led.plot(2, 2)
+    led.plot(1, 3)
+    led.plot(3, 3)
+    led.plot(0, 4)
+    led.plot(1, 4)
+    led.plot(2, 4)
+    led.plot(3, 4)
+    led.plot(4, 4)
+    pins.digitalWritePin(DigitalPin.P1, 1)
+    basic.pause(時間)
+    pins.digitalWritePin(DigitalPin.P1, 0)
+    basic.pause(1000)
+    basic.clearScreen()
+}
 bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
     受信文字 = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
 })
@@ -14,9 +34,7 @@ function コマンド処理 () {
     } else if (コマンド == "a") {
         pins.analogPitch(parseFloat(受信文字.split(",")[1]), parseFloat(受信文字.split(",")[2]))
     } else if (コマンド == "v") {
-        pins.digitalWritePin(DigitalPin.P1, 1)
-        basic.pause(parseFloat(受信文字.split(",")[1]))
-        pins.digitalWritePin(DigitalPin.P1, 0)
+        着信表示(parseFloat(受信文字.split(",")[1]), parseFloat(受信文字.split(",")[2]))
     }
     受信文字 = ""
 }
@@ -74,8 +92,6 @@ if (音声有効) {
 }
 bluetooth.startUartService()
 時刻表示(false)
-watchfont.showSorobanNumber(datetime[0], 0, 5)
-basic.pause(1000)
 basic.forever(function () {
     basic.pause(100)
     if (受信文字 != "") {
