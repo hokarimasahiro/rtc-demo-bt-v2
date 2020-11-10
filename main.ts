@@ -10,8 +10,6 @@ function コマンド処理 () {
         datetime = [parseFloat(datetimeA[0]), parseFloat(datetimeA[1]), parseFloat(datetimeA[2]), parseFloat(datetimeA[3]), parseFloat(datetimeA[4]), parseFloat(datetimeA[5]), parseFloat(datetimeA[6])]
         // datetime = split.splitNum(受信文字.substr(2, 100))
         rtc.setClockArray(datetime)
-        開始時刻 = (datetime[rtc.getClockData(clockData.hour)] * 60 + datetime[rtc.getClockData(clockData.minute)]) * 60 + datetime[rtc.getClockData(clockData.second)]
-        システム開始 = input.runningTime()
         時刻表示(false)
     } else if (コマンド == "a") {
         pins.analogPitch(parseFloat(受信文字.split(",")[1]), parseFloat(受信文字.split(",")[2]))
@@ -52,12 +50,9 @@ function 時刻表示 (読み上げ: boolean) {
     basic.clearScreen()
     basic.pause(500)
 }
-let RTC時間 = 0
-let 開始時刻 = 0
 let datetimeA: string[] = []
 let 受信文字 = ""
 let datetime: number[] = []
-let システム開始 = 0
 let コマンド = ""
 pins.digitalWritePin(DigitalPin.P0, 0)
 pins.digitalWritePin(DigitalPin.P1, 0)
@@ -66,9 +61,11 @@ let 消灯時間 = 600
 コマンド = ""
 let 時計有効 = rtc.getDevice() != rtc.getClockDevice(rtcType.NON)
 if (!(時計有効)) {
-    システム開始 = input.runningTime()
     basic.showIcon(IconNames.Sad)
+    datetime = [20, 11, 10, 3, 11, 4, 12]
     basic.pause(500)
+} else {
+    datetime = rtc.getClock()
 }
 let 音声有効 = atp3012.isAvalable()
 if (音声有効) {
@@ -76,8 +73,9 @@ if (音声有効) {
     basic.pause(200)
 }
 bluetooth.startUartService()
-datetime = rtc.getClock()
 時刻表示(false)
+watchfont.showSorobanNumber(datetime[0], 0, 5)
+basic.pause(1000)
 basic.forever(function () {
     basic.pause(100)
     if (受信文字 != "") {
@@ -86,11 +84,6 @@ basic.forever(function () {
     }
     if (時計有効) {
         datetime = rtc.getClock()
-    } else {
-        RTC時間 = 開始時刻 + (input.runningTime() - システム開始) / 1000
-        datetime[rtc.getClockData(clockData.second)] = RTC時間 % 60
-        datetime[rtc.getClockData(clockData.minute)] = Math.trunc(RTC時間 / 60) % 60
-        datetime[rtc.getClockData(clockData.hour)] = Math.trunc(RTC時間 / 3600) % 24
     }
     if (datetime[rtc.getClockData(clockData.minute)] == 0 && datetime[rtc.getClockData(clockData.second)] == 0) {
         pins.digitalWritePin(DigitalPin.P1, 1)
