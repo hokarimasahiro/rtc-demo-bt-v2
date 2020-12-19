@@ -1,29 +1,22 @@
 function 時間更新 () {
 	
 }
+bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+    受信文字 = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
+})
 function 着信表示 (時間: number, 電話番号: number) {
-    led.plot(1, 0)
-    led.plot(2, 0)
-    led.plot(3, 0)
-    led.plot(0, 1)
-    led.plot(4, 1)
-    led.plot(2, 2)
-    led.plot(1, 3)
-    led.plot(3, 3)
-    led.plot(0, 4)
-    led.plot(1, 4)
-    led.plot(2, 4)
-    led.plot(3, 4)
-    led.plot(4, 4)
+    watchfont.showIcon(
+    "01110",
+    "10001",
+    "00100",
+    "01010",
+    "11111"
+    )
     pins.digitalWritePin(DigitalPin.P1, 1)
     basic.pause(時間)
     pins.digitalWritePin(DigitalPin.P1, 0)
     basic.pause(1000)
-    basic.clearScreen()
 }
-bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
-    受信文字 = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
-})
 function コマンド処理 () {
     if (コマンド == "s") {
         datetimeA = 受信文字.substr(2, 100).split(",")
@@ -69,9 +62,10 @@ function 時刻表示 (読み上げ: boolean) {
     basic.pause(500)
 }
 let datetimeA: string[] = []
-let 受信文字 = ""
 let datetime: number[] = []
 let コマンド = ""
+let 受信文字 = ""
+受信文字 = ""
 pins.digitalWritePin(DigitalPin.P0, 0)
 pins.digitalWritePin(DigitalPin.P1, 0)
 pins.digitalWritePin(DigitalPin.P2, 0)
@@ -79,7 +73,13 @@ let 消灯時間 = 600
 コマンド = ""
 let 時計有効 = rtc.getDevice() != rtc.getClockDevice(rtcType.NON)
 if (!(時計有効)) {
-    basic.showIcon(IconNames.Sad)
+    watchfont.showIcon(
+    "00000",
+    "01010",
+    "00000",
+    "01110",
+    "10001"
+    )
     datetime = [20, 11, 10, 3, 11, 4, 12]
     basic.pause(500)
 } else {

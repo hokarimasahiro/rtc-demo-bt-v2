@@ -4,7 +4,7 @@
     "dependencies": {
         "core": "*",
         "pxt-atp3012": "github:hokarimasahiro/pxt-atp3012#1560ce652f841660f1bfd850e0638c85039d9e81",
-        "pxt-watchfont": "github:hokarimasahiro/pxt-watchfont#572ae2ddd7f597dc65081544432e18b706bec4c4",
+        "pxt-watchfont": "github:hokarimasahiro/pxt-watchfont#edad8078fa8b8ca36ff949a8d46a6a2abcea1e8d",
         "bluetooth": "*",
         "devices": "*",
         "pxt-rtc": "github:hokarimasahiro/pxt-rtc#4f6fb9696ae4edf1def11878c3413795c0aaac92",
@@ -21,5 +21,5 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "blocksprj"
+    "preferredEditor": "tsprj"
 }
