@@ -66,9 +66,6 @@ let datetime: number[] = []
 let コマンド = ""
 let 受信文字 = ""
 受信文字 = ""
-pins.digitalWritePin(DigitalPin.P0, 0)
-pins.digitalWritePin(DigitalPin.P1, 0)
-pins.digitalWritePin(DigitalPin.P2, 0)
 let 消灯時間 = 600
 コマンド = ""
 let 時計有効 = rtc.getDevice() != rtc.getClockDevice(rtcType.NON)
@@ -92,6 +89,10 @@ if (音声有効) {
 }
 bluetooth.startUartService()
 時刻表示(false)
+pins.digitalWritePin(DigitalPin.P2, 0)
+pins.setPull(DigitalPin.P8, PinPullMode.PullUp)
+pins.setPull(DigitalPin.P12, PinPullMode.PullUp)
+pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
 basic.forever(function () {
     basic.pause(100)
     if (受信文字 != "") {
@@ -115,5 +116,14 @@ basic.forever(function () {
         時刻表示(false)
     } else {
         basic.clearScreen()
+    }
+    if (pins.digitalReadPin(DigitalPin.P8) == 0) {
+        music.playTone(262, music.beat(BeatFraction.Whole))
+    }
+    if (pins.digitalReadPin(DigitalPin.P12) == 0) {
+        music.playTone(330, music.beat(BeatFraction.Whole))
+    }
+    if (pins.digitalReadPin(DigitalPin.P13) == 0) {
+        music.playTone(392, music.beat(BeatFraction.Whole))
     }
 })
