@@ -1,20 +1,4 @@
-function 時間更新 () {
-	
-}
 function 着信表示 (時間: number, 電話番号: number) {
-    led.plot(1, 0)
-    led.plot(2, 0)
-    led.plot(3, 0)
-    led.plot(0, 1)
-    led.plot(4, 1)
-    led.plot(2, 2)
-    led.plot(1, 3)
-    led.plot(3, 3)
-    led.plot(0, 4)
-    led.plot(1, 4)
-    led.plot(2, 4)
-    led.plot(3, 4)
-    led.plot(4, 4)
     pins.digitalWritePin(DigitalPin.P1, 1)
     basic.pause(時間)
     pins.digitalWritePin(DigitalPin.P1, 0)
@@ -79,17 +63,12 @@ let 消灯時間 = 600
 コマンド = ""
 let 時計有効 = rtc.getDevice() != rtc.getClockDevice(rtcType.NON)
 if (!(時計有効)) {
-    basic.showIcon(IconNames.Sad)
     datetime = [20, 11, 10, 3, 11, 4, 12]
-    basic.pause(500)
+    basic.pause(1000)
 } else {
     datetime = rtc.getClock()
 }
 let 音声有効 = atp3012.isAvalable()
-if (音声有効) {
-    watchfont.plot(0, 0)
-    basic.pause(200)
-}
 bluetooth.startUartService()
 時刻表示(false)
 basic.forever(function () {
