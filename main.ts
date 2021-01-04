@@ -1,9 +1,3 @@
-function 時間更新 () {
-	
-}
-bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
-    受信文字 = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
-})
 function 着信表示 (時間: number, 電話番号: number) {
     watchfont.showIcon(
     "01110",
@@ -17,6 +11,9 @@ function 着信表示 (時間: number, 電話番号: number) {
     pins.digitalWritePin(DigitalPin.P1, 0)
     basic.pause(1000)
 }
+bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
+    受信文字 = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
+})
 function コマンド処理 () {
     if (コマンド == "s") {
         datetimeA = 受信文字.substr(2, 100).split(",")
@@ -65,6 +62,10 @@ let datetimeA: string[] = []
 let datetime: number[] = []
 let コマンド = ""
 let 受信文字 = ""
+pins.digitalWritePin(DigitalPin.P2, 0)
+pins.setPull(DigitalPin.P8, PinPullMode.PullUp)
+pins.setPull(DigitalPin.P12, PinPullMode.PullUp)
+pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
 受信文字 = ""
 let 消灯時間 = 600
 コマンド = ""
@@ -89,10 +90,6 @@ if (音声有効) {
 }
 bluetooth.startUartService()
 時刻表示(false)
-pins.digitalWritePin(DigitalPin.P2, 0)
-pins.setPull(DigitalPin.P8, PinPullMode.PullUp)
-pins.setPull(DigitalPin.P12, PinPullMode.PullUp)
-pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
 basic.forever(function () {
     basic.pause(100)
     if (受信文字 != "") {

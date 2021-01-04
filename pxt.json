@@ -3,12 +3,12 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "pxt-atp3012": "github:hokarimasahiro/pxt-atp3012#1560ce652f841660f1bfd850e0638c85039d9e81",
-        "pxt-watchfont": "github:hokarimasahiro/pxt-watchfont#edad8078fa8b8ca36ff949a8d46a6a2abcea1e8d",
+        "pxt-atp3012": "github:hokarimasahiro/pxt-atp3012#6eb93cec22d9259a8ebd94955353905b82b2fb01",
+        "pxt-watchfont": "github:hokarimasahiro/pxt-watchfont#d5e3bf68305bc0ea0b17a19000a6f7f340f7f792",
         "bluetooth": "*",
         "devices": "*",
-        "pxt-rtc": "github:hokarimasahiro/pxt-rtc#4f6fb9696ae4edf1def11878c3413795c0aaac92",
-        "pxt-testi2c": "github:hokarimasahiro/pxt-testi2c#026b35e4c81b77167e7d124396d2bdf239f3e47e"
+        "pxt-rtc": "github:hokarimasahiro/pxt-rtc#cd40d92d5b4ba4de09cdcdbfe17adde70492bf57",
+        "microphone": "*"
     },
     "files": [
         "main.blocks",
