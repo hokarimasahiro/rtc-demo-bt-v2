@@ -83,6 +83,15 @@ if (!(時計有効)) {
     "01110",
     "10001"
     )
+    rtc.setClock(
+    2021,
+    1,
+    6,
+    3,
+    5,
+    50,
+    20
+    )
     basic.pause(500)
 } else {
     rtc.getClock()
@@ -100,9 +109,7 @@ basic.forever(function () {
         コマンド = 受信文字.split(",")[0]
         コマンド処理()
     }
-    if (時計有効) {
-        rtc.getClock()
-    }
+    rtc.getClock()
     if (rtc.getClockData(clockData.minute) == 0 && rtc.getClockData(clockData.second) == 0) {
         pins.digitalWritePin(DigitalPin.P1, 1)
         basic.pause(200)
