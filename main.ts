@@ -17,9 +17,15 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
 function コマンド処理 () {
     if (コマンド == "s") {
         datetimeA = 受信文字.substr(2, 100).split(",")
-        datetime = [parseFloat(datetimeA[0]), parseFloat(datetimeA[1]), parseFloat(datetimeA[2]), parseFloat(datetimeA[3]), parseFloat(datetimeA[4]), parseFloat(datetimeA[5]), parseFloat(datetimeA[6])]
-        // datetime = split.splitNum(受信文字.substr(2, 100))
-        rtc.setClockArray(datetime)
+        rtc.setClock(
+        parseFloat(datetimeA[0]),
+        parseFloat(datetimeA[1]),
+        parseFloat(datetimeA[2]),
+        parseFloat(datetimeA[3]),
+        parseFloat(datetimeA[4]),
+        parseFloat(datetimeA[5]),
+        parseFloat(datetimeA[6])
+        )
         時刻表示(false)
     } else if (コマンド == "a") {
         pins.analogPitch(parseFloat(受信文字.split(",")[1]), parseFloat(受信文字.split(",")[2]))
@@ -42,24 +48,23 @@ function 表示方向 () {
 }
 function 秒表示 () {
     表示方向()
-    watchfont.showNumber2(datetime[rtc.getClockData(clockData.second)])
+    watchfont.showNumber2(rtc.getClockData(clockData.second))
 }
 function 時刻表示 (読み上げ: boolean) {
     if (読み上げ) {
-        atp3012.write("tada'ima <NUMK VAL=" + datetime[rtc.getClockData(clockData.hour)] + " COUNTER=ji>" + " <NUMK VAL=" + datetime[rtc.getClockData(clockData.minute)] + " COUNTER=funn>desu.")
+        atp3012.write("tada'ima <NUMK VAL=" + rtc.getClockData(clockData.hour) + " COUNTER=ji>" + " <NUMK VAL=" + rtc.getClockData(clockData.minute) + " COUNTER=funn>desu.")
     }
     表示方向()
-    watchfont.showNumber2(datetime[rtc.getClockData(clockData.hour)])
+    watchfont.showNumber2(rtc.getClockData(clockData.hour))
     basic.pause(1000)
     basic.clearScreen()
     basic.pause(200)
-    watchfont.showNumber2(datetime[rtc.getClockData(clockData.minute)])
+    watchfont.showNumber2(rtc.getClockData(clockData.minute))
     basic.pause(1000)
     basic.clearScreen()
     basic.pause(500)
 }
 let datetimeA: string[] = []
-let datetime: number[] = []
 let コマンド = ""
 let 受信文字 = ""
 pins.digitalWritePin(DigitalPin.P2, 0)
@@ -78,10 +83,9 @@ if (!(時計有効)) {
     "01110",
     "10001"
     )
-    datetime = [20, 11, 10, 3, 11, 4, 12]
     basic.pause(500)
 } else {
-    datetime = rtc.getClock()
+    rtc.getClock()
 }
 let 音声有効 = atp3012.isAvalable()
 if (音声有効) {
@@ -97,9 +101,9 @@ basic.forever(function () {
         コマンド処理()
     }
     if (時計有効) {
-        datetime = rtc.getClock()
+        rtc.getClock()
     }
-    if (datetime[rtc.getClockData(clockData.minute)] == 0 && datetime[rtc.getClockData(clockData.second)] == 0) {
+    if (rtc.getClockData(clockData.minute) == 0 && rtc.getClockData(clockData.second) == 0) {
         pins.digitalWritePin(DigitalPin.P1, 1)
         basic.pause(200)
         pins.digitalWritePin(DigitalPin.P1, 0)

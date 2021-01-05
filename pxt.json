@@ -7,7 +7,7 @@
         "pxt-watchfont": "github:hokarimasahiro/pxt-watchfont#d5e3bf68305bc0ea0b17a19000a6f7f340f7f792",
         "bluetooth": "*",
         "devices": "*",
-        "pxt-rtc": "github:hokarimasahiro/pxt-rtc#cd40d92d5b4ba4de09cdcdbfe17adde70492bf57",
+        "pxt-rtc": "github:hokarimasahiro/pxt-rtc#6cd11687404d6f912372e02c5f029f3952146e29",
         "microphone": "*"
     },
     "files": [
