@@ -16,21 +16,20 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
 })
 function コマンド処理 () {
     if (コマンド == "s") {
-        datetimeA = 受信文字.substr(2, 100).split(",")
         rtc.setClock(
-        parseFloat(datetimeA[0]),
-        parseFloat(datetimeA[1]),
-        parseFloat(datetimeA[2]),
-        parseFloat(datetimeA[3]),
-        parseFloat(datetimeA[4]),
-        parseFloat(datetimeA[5]),
-        parseFloat(datetimeA[6])
+        parseInt(パラメータ[0]),
+        parseInt(パラメータ[1]),
+        parseInt(パラメータ[2]),
+        parseInt(パラメータ[3]),
+        parseInt(パラメータ[4]),
+        parseInt(パラメータ[5]),
+        parseInt(パラメータ[6])
         )
         時刻表示(false)
     } else if (コマンド == "a") {
-        pins.analogPitch(parseFloat(受信文字.split(",")[1]), parseFloat(受信文字.split(",")[2]))
+        pins.analogPitch(parseInt(パラメータ[0]), parseInt(パラメータ[1]))
     } else if (コマンド == "v") {
-        着信表示(parseFloat(受信文字.split(",")[1]), parseFloat(受信文字.split(",")[2]))
+        着信表示(parseInt(パラメータ[0]), parseInt(パラメータ[1]))
     }
     受信文字 = ""
 }
@@ -64,7 +63,7 @@ function 時刻表示 (読み上げ: boolean) {
     basic.clearScreen()
     basic.pause(500)
 }
-let datetimeA: string[] = []
+let パラメータ: string[] = []
 let コマンド = ""
 let 受信文字 = ""
 pins.digitalWritePin(DigitalPin.P2, 0)
@@ -107,6 +106,7 @@ basic.forever(function () {
     basic.pause(100)
     if (受信文字 != "") {
         コマンド = 受信文字.split(",")[0]
+        パラメータ = 受信文字.substr(2, 100).split(",")
         コマンド処理()
     }
     rtc.getClock()
