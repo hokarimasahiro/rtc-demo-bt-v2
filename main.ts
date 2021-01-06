@@ -87,6 +87,7 @@ if (!(時計有効)) {
     rtc.setClockData(clockData.hour, 4)
     rtc.setClockData(clockData.minute, 13)
     rtc.setClockData(clockData.second, 32)
+    rtc.setClock()
     basic.pause(500)
 }
 let 音声有効 = atp3012.isAvalable()
