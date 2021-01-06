@@ -16,15 +16,14 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
 })
 function コマンド処理 () {
     if (コマンド == "s") {
-        rtc.setClock(
-        parseInt(パラメータ[0]),
-        parseInt(パラメータ[1]),
-        parseInt(パラメータ[2]),
-        parseInt(パラメータ[3]),
-        parseInt(パラメータ[4]),
-        parseInt(パラメータ[5]),
-        parseInt(パラメータ[6])
-        )
+        rtc.setClockData(clockData.year, parseInt(パラメータ[0]))
+        rtc.setClockData(clockData.month, parseInt(パラメータ[1]))
+        rtc.setClockData(clockData.day, parseInt(パラメータ[2]))
+        rtc.setClockData(clockData.weekday, parseInt(パラメータ[3]))
+        rtc.setClockData(clockData.hour, parseInt(パラメータ[4]))
+        rtc.setClockData(clockData.minute, parseInt(パラメータ[5]))
+        rtc.setClockData(clockData.second, parseInt(パラメータ[6]))
+        rtc.setClock()
         時刻表示(false)
     } else if (コマンド == "a") {
         pins.analogPitch(parseInt(パラメータ[0]), parseInt(パラメータ[1]))
@@ -82,18 +81,13 @@ if (!(時計有効)) {
     "01110",
     "10001"
     )
-    rtc.setClock(
-    2021,
-    1,
-    6,
-    3,
-    5,
-    50,
-    20
-    )
+    rtc.setClockData(clockData.year, 2021)
+    rtc.setClockData(clockData.month, 1)
+    rtc.setClockData(clockData.day, 7)
+    rtc.setClockData(clockData.hour, 4)
+    rtc.setClockData(clockData.minute, 13)
+    rtc.setClockData(clockData.second, 32)
     basic.pause(500)
-} else {
-    rtc.getClock()
 }
 let 音声有効 = atp3012.isAvalable()
 if (音声有効) {
@@ -101,6 +95,7 @@ if (音声有効) {
     basic.pause(200)
 }
 bluetooth.startUartService()
+rtc.getClock()
 時刻表示(false)
 basic.forever(function () {
     basic.pause(100)
