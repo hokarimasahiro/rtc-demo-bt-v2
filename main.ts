@@ -69,9 +69,7 @@ pins.digitalWritePin(DigitalPin.P2, 0)
 pins.setPull(DigitalPin.P8, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P12, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
-受信文字 = ""
 let 消灯時間 = 600
-コマンド = ""
 let 時計有効 = rtc.getDevice() != rtc.getClockDevice(rtcType.NON)
 if (!(時計有効)) {
     watchfont.showIcon(
