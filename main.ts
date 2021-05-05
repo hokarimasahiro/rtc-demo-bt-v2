@@ -6,14 +6,11 @@ function 着信表示 (時間: number, 電話番号: number) {
     "01010",
     "11111"
     )
-    pins.digitalWritePin(DigitalPin.P1, 1)
+    pins.digitalWritePin(DigitalPin.P2, 1)
     basic.pause(時間)
-    pins.digitalWritePin(DigitalPin.P1, 0)
+    pins.digitalWritePin(DigitalPin.P2, 0)
     basic.pause(1000)
 }
-bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
-    受信文字 = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
-})
 function コマンド処理 () {
     if (コマンド == "s") {
         rtc.setClockData(clockData.year, parseInt(パラメータ[0]))
@@ -62,9 +59,9 @@ function 時刻表示 (読み上げ: boolean) {
     basic.clearScreen()
     basic.pause(500)
 }
+let 受信文字 = ""
 let パラメータ: string[] = []
 let コマンド = ""
-let 受信文字 = ""
 pins.digitalWritePin(DigitalPin.P2, 0)
 pins.setPull(DigitalPin.P8, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P12, PinPullMode.PullUp)
@@ -105,9 +102,9 @@ basic.forever(function () {
     }
     rtc.getClock()
     if (rtc.getClockData(clockData.minute) == 0 && rtc.getClockData(clockData.second) == 0) {
-        pins.digitalWritePin(DigitalPin.P1, 1)
+        pins.digitalWritePin(DigitalPin.P2, 1)
         basic.pause(200)
-        pins.digitalWritePin(DigitalPin.P1, 0)
+        pins.digitalWritePin(DigitalPin.P2, 0)
         basic.pause(800)
     }
     if (input.buttonIsPressed(Button.A) && !(input.buttonIsPressed(Button.B))) {
@@ -127,5 +124,10 @@ basic.forever(function () {
     }
     if (pins.digitalReadPin(DigitalPin.P13) == 0) {
         music.playTone(392, music.beat(BeatFraction.Whole))
+    }
+})
+control.inBackground(function () {
+    while (true) {
+        受信文字 = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
     }
 })
