@@ -21,13 +21,12 @@ function コマンド処理 () {
         rtc.setClockData(clockData.minute, parseInt(パラメータ[5]))
         rtc.setClockData(clockData.second, parseInt(パラメータ[6]))
         rtc.setClock()
-        時刻表示(false)
+        時刻表示(0)
     } else if (コマンド == "a") {
         pins.analogPitch(parseInt(パラメータ[0]), parseInt(パラメータ[1]))
     } else if (コマンド == "v") {
         着信表示(parseInt(パラメータ[0]), parseInt(パラメータ[1]))
     }
-    受信文字 = ""
 }
 function 表示方向 () {
     if (input.rotation(Rotation.Pitch) <= -40) {
@@ -45,21 +44,22 @@ function 秒表示 () {
     表示方向()
     watchfont.showNumber2(rtc.getClockData(clockData.second))
 }
-function 時刻表示 (読み上げ: boolean) {
-    if (読み上げ) {
+function 時刻表示 (タイプ: number) {
+    if (タイプ == 0) {
+        表示方向()
+        watchfont.showNumber2(rtc.getClockData(clockData.hour))
+        basic.pause(1000)
+        basic.clearScreen()
+        basic.pause(200)
+        watchfont.showNumber2(rtc.getClockData(clockData.minute))
+        basic.pause(1000)
+        basic.clearScreen()
+        basic.pause(500)
+    } else if (タイプ == 1) {
         atp3012.write("tada'ima <NUMK VAL=" + rtc.getClockData(clockData.hour) + " COUNTER=ji>" + " <NUMK VAL=" + rtc.getClockData(clockData.minute) + " COUNTER=funn>desu.")
+        basic.showString("" + rtc.getClockData(clockData.hour) + ":" + rtc.getClockData(clockData.minute))
     }
-    表示方向()
-    watchfont.showNumber2(rtc.getClockData(clockData.hour))
-    basic.pause(1000)
-    basic.clearScreen()
-    basic.pause(200)
-    watchfont.showNumber2(rtc.getClockData(clockData.minute))
-    basic.pause(1000)
-    basic.clearScreen()
-    basic.pause(500)
 }
-let 受信文字 = ""
 let パラメータ: string[] = []
 let コマンド = ""
 pins.digitalWritePin(DigitalPin.P2, 0)
@@ -90,15 +90,17 @@ if (音声有効) {
     watchfont.plot(0, 0)
     basic.pause(200)
 }
+let QUEUE: string[] = []
 bluetooth.startUartService()
 rtc.getClock()
-時刻表示(false)
+時刻表示(0)
 basic.forever(function () {
     basic.pause(100)
-    if (受信文字 != "") {
-        コマンド = 受信文字.split(",")[0]
-        パラメータ = 受信文字.substr(2, 100).split(",")
+    if (QUEUE.length > 0) {
+        コマンド = QUEUE[0].split(",")[0]
+        パラメータ = QUEUE[0].substr(2, 100).split(",")
         コマンド処理()
+        QUEUE.shift()
     }
     rtc.getClock()
     if (rtc.getClockData(clockData.minute) == 0 && rtc.getClockData(clockData.second) == 0) {
@@ -108,11 +110,11 @@ basic.forever(function () {
         basic.pause(800)
     }
     if (input.buttonIsPressed(Button.A) && !(input.buttonIsPressed(Button.B))) {
-        時刻表示(音声有効)
+        時刻表示(1)
     } else if (input.buttonIsPressed(Button.B) && !(input.buttonIsPressed(Button.A))) {
         秒表示()
     } else if (input.isGesture(Gesture.Shake)) {
-        時刻表示(false)
+        時刻表示(0)
     } else {
         basic.clearScreen()
     }
@@ -128,6 +130,6 @@ basic.forever(function () {
 })
 control.inBackground(function () {
     while (true) {
-        受信文字 = bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine))
+        QUEUE.push(bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine)))
     }
 })
