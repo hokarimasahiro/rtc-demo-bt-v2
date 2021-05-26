@@ -115,6 +115,8 @@ basic.forever(function () {
         秒表示()
     } else if (input.isGesture(Gesture.Shake)) {
         時刻表示(0)
+    } else if (input.logoIsPressed()) {
+        時刻表示(0)
     } else {
         basic.clearScreen()
     }
