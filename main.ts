@@ -62,34 +62,13 @@ function 時刻表示 (タイプ: number) {
 }
 let パラメータ: string[] = []
 let コマンド = ""
+pins.digitalWritePin(DigitalPin.P1, 0)
 pins.digitalWritePin(DigitalPin.P2, 0)
 pins.setPull(DigitalPin.P8, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P12, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
 let 消灯時間 = 600
 let 時計有効 = rtc.getDevice() != rtc.getClockDevice(rtcType.NON)
-if (!(時計有効)) {
-    watchfont.showIcon(
-    "00000",
-    "01010",
-    "00000",
-    "01110",
-    "10001"
-    )
-    rtc.setClockData(clockData.year, 2021)
-    rtc.setClockData(clockData.month, 1)
-    rtc.setClockData(clockData.day, 7)
-    rtc.setClockData(clockData.hour, 4)
-    rtc.setClockData(clockData.minute, 13)
-    rtc.setClockData(clockData.second, 32)
-    rtc.setClock()
-    basic.pause(500)
-}
-let 音声有効 = atp3012.isAvalable()
-if (音声有効) {
-    watchfont.plot(0, 0)
-    basic.pause(200)
-}
 let QUEUE: string[] = []
 bluetooth.startUartService()
 rtc.getClock()
@@ -121,17 +100,19 @@ basic.forever(function () {
         basic.clearScreen()
     }
     if (pins.digitalReadPin(DigitalPin.P8) == 0) {
-        music.playTone(262, music.beat(BeatFraction.Whole))
+        soundExpression.giggle.playUntilDone()
+    } else if (pins.digitalReadPin(DigitalPin.P12) == 0) {
+        soundExpression.happy.playUntilDone()
+    } else if (pins.digitalReadPin(DigitalPin.P13) == 0) {
+        soundExpression.hello.playUntilDone()
     }
-    if (pins.digitalReadPin(DigitalPin.P12) == 0) {
-        music.playTone(330, music.beat(BeatFraction.Whole))
+    if (true) {
+    	
     }
-    if (pins.digitalReadPin(DigitalPin.P13) == 0) {
-        music.playTone(392, music.beat(BeatFraction.Whole))
+    if (true) {
+    	
     }
 })
-control.inBackground(function () {
-    while (true) {
-        QUEUE.push(bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine)))
-    }
+basic.forever(function () {
+    QUEUE.push(bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine)))
 })

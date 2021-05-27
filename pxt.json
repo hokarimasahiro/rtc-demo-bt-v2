@@ -8,7 +8,8 @@
         "bluetooth": "*",
         "devices": "*",
         "pxt-rtc": "github:hokarimasahiro/pxt-rtc#eefe43538750c8ecfb3329dbe5dbcd352a67d673",
-        "microphone": "*"
+        "microphone": "*",
+        "pxt-neopixel": "github:hokarimasahiro/pxt-neopixel#495e63c8dc948358735ab290532af1568ef2a7cb"
     },
     "files": [
         "main.blocks",
