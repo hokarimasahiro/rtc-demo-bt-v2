@@ -68,7 +68,6 @@ pins.setPull(DigitalPin.P8, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P12, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
 let 消灯時間 = 600
-let 時計有効 = rtc.getDevice() != rtc.getClockDevice(rtcType.NON)
 let QUEUE: string[] = []
 bluetooth.startUartService()
 rtc.getClock()
@@ -98,19 +97,6 @@ basic.forever(function () {
         時刻表示(0)
     } else {
         basic.clearScreen()
-    }
-    if (pins.digitalReadPin(DigitalPin.P8) == 0) {
-        soundExpression.giggle.playUntilDone()
-    } else if (pins.digitalReadPin(DigitalPin.P12) == 0) {
-        soundExpression.happy.playUntilDone()
-    } else if (pins.digitalReadPin(DigitalPin.P13) == 0) {
-        soundExpression.hello.playUntilDone()
-    }
-    if (true) {
-    	
-    }
-    if (true) {
-    	
     }
 })
 basic.forever(function () {
