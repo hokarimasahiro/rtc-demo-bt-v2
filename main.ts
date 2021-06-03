@@ -7,9 +7,13 @@ function 着信表示 (時間: number, 電話番号: number) {
     "11111"
     )
     pins.digitalWritePin(DigitalPin.P2, 1)
+    neopixel.showColor(neopixel.colors(neopixel.Colors.Red))
     basic.pause(時間)
     pins.digitalWritePin(DigitalPin.P2, 0)
-    basic.pause(1000)
+    neopixel.showColor(neopixel.colors(neopixel.Colors.Green))
+    basic.pause(200)
+    neopixel.showColor(neopixel.colors(neopixel.Colors.Blue))
+    basic.pause(200)
 }
 function コマンド処理 () {
     if (コマンド == "s") {
@@ -62,7 +66,8 @@ function 時刻表示 (タイプ: number) {
 }
 let パラメータ: string[] = []
 let コマンド = ""
-pins.digitalWritePin(DigitalPin.P1, 0)
+neopixel.initNeopixel(DigitalPin.P1, 4)
+neopixel.showColor(neopixel.colors(neopixel.Colors.Black))
 pins.digitalWritePin(DigitalPin.P2, 0)
 pins.setPull(DigitalPin.P8, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P12, PinPullMode.PullUp)
