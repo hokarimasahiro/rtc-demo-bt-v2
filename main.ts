@@ -14,6 +14,7 @@ function 着信表示 (時間: number, 電話番号: number) {
     basic.pause(200)
     neopixel.showColor(neopixel.colors(neopixel.Colors.Blue))
     basic.pause(200)
+    neopixel.showColor(neopixel.colors(neopixel.Colors.Black))
 }
 function コマンド処理 () {
     if (コマンド == "s") {
