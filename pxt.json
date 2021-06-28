@@ -3,7 +3,6 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "pxt-atp3012": "github:hokarimasahiro/pxt-atp3012#6eb93cec22d9259a8ebd94955353905b82b2fb01",
         "pxt-watchfont": "github:hokarimasahiro/pxt-watchfont#d5e3bf68305bc0ea0b17a19000a6f7f340f7f792",
         "bluetooth": "*",
         "devices": "*",
@@ -19,6 +18,10 @@
     "testFiles": [
         "test.ts"
     ],
+    "targetVersions": {
+        "target": "4.0.6",
+        "targetId": "microbit"
+    },
     "supportedTargets": [
         "microbit"
     ],
