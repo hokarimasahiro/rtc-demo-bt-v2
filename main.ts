@@ -104,4 +104,11 @@ basic.forever(function () {
     } else {
         basic.clearScreen()
     }
+    if (pins.digitalReadPin(DigitalPin.P8) == 0) {
+        pins.analogPitch(220, 10)
+    } else if (pins.digitalReadPin(DigitalPin.P12) == 0) {
+        pins.analogPitch(440, 10)
+    } else if (pins.digitalReadPin(DigitalPin.P13) == 0) {
+        pins.analogPitch(880, 10)
+    }
 })
