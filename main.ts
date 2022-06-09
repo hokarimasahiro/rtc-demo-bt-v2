@@ -22,14 +22,14 @@ bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () 
 function コマンド処理 () {
     コマンド = 受信文字.split(",")
     if (コマンド[0] == "s") {
-        rtc.setClockData(clockData.year, parseInt(コマンド[1]))
-        rtc.setClockData(clockData.month, parseInt(コマンド[2]))
-        rtc.setClockData(clockData.day, parseInt(コマンド[3]))
-        rtc.setClockData(clockData.weekday, parseInt(コマンド[4]))
-        rtc.setClockData(clockData.hour, parseInt(コマンド[5]))
-        rtc.setClockData(clockData.minute, parseInt(コマンド[6]))
-        rtc.setClockData(clockData.second, parseInt(コマンド[7]))
-        rtc.setClock()
+        ds3231.setClockData(clockData.year, parseInt(コマンド[1]))
+        ds3231.setClockData(clockData.month, parseInt(コマンド[2]))
+        ds3231.setClockData(clockData.day, parseInt(コマンド[3]))
+        ds3231.setClockData(clockData.weekday, parseInt(コマンド[4]))
+        ds3231.setClockData(clockData.hour, parseInt(コマンド[5]))
+        ds3231.setClockData(clockData.minute, parseInt(コマンド[6]))
+        ds3231.setClockData(clockData.second, parseInt(コマンド[7]))
+        ds3231.setClock()
         時刻表示(0)
     } else if (コマンド[0] == "a") {
         pins.analogPitch(parseInt(コマンド[1]), parseInt(コマンド[2]))
@@ -51,21 +51,21 @@ function 表示方向 () {
 }
 function 秒表示 () {
     表示方向()
-    watchfont.showNumber2(rtc.getClockData(clockData.second))
+    watchfont.showNumber2(ds3231.getClockData(clockData.second))
 }
 function 時刻表示 (タイプ: number) {
     if (タイプ == 0) {
         表示方向()
-        watchfont.showNumber2(rtc.getClockData(clockData.hour))
+        watchfont.showNumber2(ds3231.getClockData(clockData.hour))
         basic.pause(1000)
         basic.clearScreen()
         basic.pause(200)
-        watchfont.showNumber2(rtc.getClockData(clockData.minute))
+        watchfont.showNumber2(ds3231.getClockData(clockData.minute))
         basic.pause(1000)
         basic.clearScreen()
         basic.pause(500)
     } else if (タイプ == 1) {
-        basic.showString("" + rtc.getClockData(clockData.hour) + ":" + rtc.getClockData(clockData.minute))
+        basic.showString("" + ds3231.getClockData(clockData.hour) + ":" + ds3231.getClockData(clockData.minute))
     }
 }
 let 受信文字 = ""
@@ -79,7 +79,7 @@ pins.setPull(DigitalPin.P12, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
 QUEUE = []
 bluetooth.startUartService()
-rtc.getClock()
+ds3231.getClock()
 時刻表示(0)
 basic.forever(function () {
     basic.pause(100)
@@ -88,8 +88,8 @@ basic.forever(function () {
         コマンド処理()
         QUEUE.shift()
     }
-    rtc.getClock()
-    if (rtc.getClockData(clockData.minute) == 0 && rtc.getClockData(clockData.second) == 0) {
+    ds3231.getClock()
+    if (ds3231.getClockData(clockData.minute) == 0 && ds3231.getClockData(clockData.second) == 0) {
         pins.digitalWritePin(DigitalPin.P2, 1)
         basic.pause(200)
         pins.digitalWritePin(DigitalPin.P2, 0)
@@ -105,10 +105,14 @@ basic.forever(function () {
         basic.clearScreen()
     }
     if (pins.digitalReadPin(DigitalPin.P8) == 0) {
+        neopixel.showColor(neopixel.colors(neopixel.Colors.Red))
         pins.analogPitch(220, 10)
     } else if (pins.digitalReadPin(DigitalPin.P12) == 0) {
+        neopixel.showColor(neopixel.colors(neopixel.Colors.Orange))
         pins.analogPitch(440, 10)
     } else if (pins.digitalReadPin(DigitalPin.P13) == 0) {
+        neopixel.showColor(neopixel.colors(neopixel.Colors.Green))
         pins.analogPitch(880, 10)
     }
+    neopixel.showColor(neopixel.colors(neopixel.Colors.Black))
 })
