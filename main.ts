@@ -7,14 +7,14 @@ function 着信表示 (時間: number, 電話番号: number) {
     "11111"
     )
     pins.digitalWritePin(DigitalPin.P2, 1)
-    neopixel.showColor(neopixel.colors(neopixel.Colors.Red))
+    neopixelLight.showColor(neopixelLight.colors(neopixelLight.Colors.Red))
     basic.pause(時間)
     pins.digitalWritePin(DigitalPin.P2, 0)
-    neopixel.showColor(neopixel.colors(neopixel.Colors.Green))
+    neopixelLight.showColor(neopixelLight.colors(neopixelLight.Colors.Green))
     basic.pause(200)
-    neopixel.showColor(neopixel.colors(neopixel.Colors.Blue))
+    neopixelLight.showColor(neopixelLight.colors(neopixelLight.Colors.Blue))
     basic.pause(200)
-    neopixel.showColor(neopixel.colors(neopixel.Colors.Black))
+    neopixelLight.showColor(neopixelLight.colors(neopixelLight.Colors.Black))
 }
 bluetooth.onUartDataReceived(serial.delimiters(Delimiters.NewLine), function () {
     QUEUE.push(bluetooth.uartReadUntil(serial.delimiters(Delimiters.NewLine)))
@@ -71,8 +71,8 @@ function 時刻表示 (タイプ: number) {
 let 受信文字 = ""
 let コマンド: string[] = []
 let QUEUE: string[] = []
-neopixel.initNeopixel(DigitalPin.P1, 4)
-neopixel.showColor(neopixel.colors(neopixel.Colors.Black))
+neopixelLight.initNeopixel(DigitalPin.P1, 4)
+neopixelLight.showColor(neopixelLight.colors(neopixelLight.Colors.Black))
 pins.digitalWritePin(DigitalPin.P2, 0)
 pins.setPull(DigitalPin.P8, PinPullMode.PullUp)
 pins.setPull(DigitalPin.P12, PinPullMode.PullUp)
@@ -105,14 +105,14 @@ basic.forever(function () {
         basic.clearScreen()
     }
     if (pins.digitalReadPin(DigitalPin.P8) == 0) {
-        neopixel.showColor(neopixel.colors(neopixel.Colors.Red))
+        neopixelLight.showColor(neopixelLight.colors(neopixelLight.Colors.Red))
         pins.analogPitch(220, 10)
     } else if (pins.digitalReadPin(DigitalPin.P12) == 0) {
-        neopixel.showColor(neopixel.colors(neopixel.Colors.Orange))
+        neopixelLight.showColor(neopixelLight.colors(neopixelLight.Colors.Orange))
         pins.analogPitch(440, 10)
     } else if (pins.digitalReadPin(DigitalPin.P13) == 0) {
-        neopixel.showColor(neopixel.colors(neopixel.Colors.Green))
+        neopixelLight.showColor(neopixelLight.colors(neopixelLight.Colors.Green))
         pins.analogPitch(880, 10)
     }
-    neopixel.showColor(neopixel.colors(neopixel.Colors.Black))
+    neopixelLight.showColor(neopixelLight.colors(neopixelLight.Colors.Black))
 })

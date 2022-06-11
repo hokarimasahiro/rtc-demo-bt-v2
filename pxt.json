@@ -7,7 +7,7 @@
         "bluetooth": "*",
         "devices": "*",
         "microphone": "*",
-        "pxt-neopixelLight": "github:hokarimasahiro/pxt-neopixellight#7c31332d8bf91a8182be33b49f580b752890a123",
+        "pxt-neopixelLight": "github:hokarimasahiro/pxt-neopixellight#e311bba9d8c381aedc50df2086414f42d4f93012",
         "pxt-ds3231": "github:hokarimasahiro/pxt-ds3231#44142032c8c00b056e03c5000d077c8ebe8e66c9"
     },
     "files": [
